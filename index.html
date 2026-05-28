@@ -13,6 +13,7 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/mobile-first.css">
 </head>
 
 <body class="auth-locked">
@@ -124,28 +125,56 @@
                 <button class="btn-qr" onclick="openQRModal('scan')">
                     Quét QR
                 </button>
-                <div class="user-profile" title="Tài khoản đang đăng nhập">
-                    <div class="user-avatar" id="userAvatar">SV</div>
-                    <div class="user-info">
-                        <strong id="userDisplayName">Sinh viên</strong>
-                        <span id="userDisplayId">Đang đăng nhập</span>
-                    </div>
-                    <button class="btn-logout" onclick="logoutUser()">Đăng xuất</button>
-                </div>
+                <div class="user-menu-wrap">
+    <button type="button" class="user-profile" id="userMenuBtn" onclick="toggleUserDropdown(event)">
+        <div class="user-avatar" id="userAvatar">SV</div>
+        <div class="user-info">
+            <strong id="userDisplayName">Sinh viên</strong>
+            <span id="userDisplayId">Đang đăng nhập</span>
+        </div>
+        <span class="user-chevron">▾</span>
+    </button>
+
+    <div class="user-dropdown" id="userDropdown">
+        <button type="button" onclick="openProfilePage()">
+            <span>👤</span>
+            <span id="dropdownProfileLabel">Trang cá nhân</span>
+        </button>
+        <button type="button" class="danger" onclick="logoutUser()">
+            <span>↪</span>
+            <span id="dropdownLogoutLabel">Đăng xuất</span>
+        </button>
+    </div>
+</div>
             </div>
         </div>
         </header>
 
         <!-- NAV -->
         <nav>
-            <div class="nav-inner">
-                <div class="nav-item active" onclick="setNav(this,'all')">Trang chủ</div>
-                <div class="nav-item" onclick="setNav(this,'catalog')">Danh mục sách</div>
-                <div class="nav-item" onclick="setNav(this,'borrow')">Sách đang mượn</div>
-                <div class="nav-item" onclick="setNav(this,'history')">Lịch sử</div>
-                <div class="nav-item" onclick="setNav(this,'recommend')">Gợi ý cho bạn</div>
-            </div>
-        </nav>
+    <div class="nav-inner">
+        <div class="nav-item active" onclick="setNav(this,'all')">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Trang chủ</span>
+        </div>
+        <div class="nav-item" onclick="setNav(this,'catalog')">
+            <span class="nav-icon">📚</span>
+            <span class="nav-label">Danh mục sách</span>
+        </div>
+        <div class="nav-item" onclick="setNav(this,'borrow')">
+            <span class="nav-icon">📖</span>
+            <span class="nav-label">Sách đang mượn</span>
+        </div>
+        <div class="nav-item" onclick="setNav(this,'history')">
+            <span class="nav-icon">🕘</span>
+            <span class="nav-label">Lịch sử</span>
+        </div>
+        <div class="nav-item" onclick="setNav(this,'recommend')">
+            <span class="nav-icon">⭐</span>
+            <span class="nav-label">Gợi ý cho bạn</span>
+        </div>
+    </div>
+</nav>
     </div>
 
     <!-- MAIN -->
@@ -478,7 +507,81 @@
             </div>
         </main>
     </div>
+<!-- PAGE: TRANG CÁ NHÂN -->
+<div class="main page-section profile-page" id="profilePage">
+    <main class="content content-full">
+        <div class="profile-hero">
+            <div>
+                <div class="page-eyebrow">TÀI KHOẢN SINH VIÊN</div>
+                <h1 id="profilePageTitle">Trang Cá Nhân</h1>
+                <p id="profilePageDesc">Quản lý thông tin tài khoản, thống kê mượn trả và điểm tích lũy của bạn.</p>
+            </div>
+            <div class="borrow-page-actions">
+                <button class="page-btn page-btn-primary" onclick="setNav(document.querySelector('.nav-item:nth-child(1)'), 'all')">← Về trang chủ</button>
+                <button class="page-btn page-btn-light" onclick="logoutUser()">Đăng xuất</button>
+            </div>
+        </div>
 
+        <div class="profile-grid">
+            <section class="profile-card profile-main-card">
+                <div class="profile-main-top">
+                    <div class="profile-avatar-big" id="profileAvatarBig">SV</div>
+                    <div>
+                        <h2 id="profileName">Sinh viên</h2>
+                        <p id="profileStudentId">SV000000</p>
+                    </div>
+                </div>
+
+                <div class="profile-info-list">
+                    <div class="profile-info-item">
+                        <span>Email</span>
+                        <strong id="profileEmail">---</strong>
+                    </div>
+                    <div class="profile-info-item">
+                        <span>Mã tài khoản</span>
+                        <strong id="profileUserId">---</strong>
+                    </div>
+                    <div class="profile-info-item">
+                        <span>Ngày đăng ký</span>
+                        <strong id="profileCreatedAt">---</strong>
+                    </div>
+                    <div class="profile-info-item">
+                        <span>Lần đăng nhập gần nhất</span>
+                        <strong id="profileLoginAt">---</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section class="profile-card">
+                <div class="profile-card-title">Thống kê đọc sách</div>
+
+                <div class="profile-stat-row">
+                    <div class="profile-stat-icon">📖</div>
+                    <div>
+                        <p>Đang mượn</p>
+                        <strong id="profileBorrowingCount">0</strong>
+                    </div>
+                </div>
+
+                <div class="profile-stat-row">
+                    <div class="profile-stat-icon">✅</div>
+                    <div>
+                        <p>Đã trả</p>
+                        <strong id="profileReturnedCount">0</strong>
+                    </div>
+                </div>
+
+                <div class="profile-stat-row">
+                    <div class="profile-stat-icon">⭐</div>
+                    <div>
+                        <p>Điểm tích lũy</p>
+                        <strong id="profilePointsCount">0</strong>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
     <!-- QR MODAL -->
     <div class="modal-overlay" id="qrModal" onclick="closeModalOutside(event)">
         <div class="modal">
@@ -586,7 +689,7 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
+<script src="js/script.js"></script>
+<script src="js/mobile-first-profile.js"></script>
 </body>
-
 </html>
