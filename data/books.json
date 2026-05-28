@@ -1,0 +1,90 @@
+[
+    {
+        "id": 1,
+        "title": "Cơ Sở Dữ Liệu Nâng Cao",
+        "author": "Nguyễn Văn Tuấn",
+        "cat": "congnghe",
+        "status": "available",
+        "cover": "img/cosolythuyet.png",
+        "badge": "Mới",
+        "isbn": "978-604-1234",
+        "qr": "BOOK-LV-001"
+    },
+    {
+        "id": 2,
+        "title": "Clean Code",
+        "author": "Robert C. Martin",
+        "cat": "congnghe",
+        "status": "available",
+        "cover": "img/cleancode.png",
+        "badge": null,
+        "isbn": "978-0-13-235088",
+        "qr": "BOOK-LV-002"
+    },
+    {
+        "id": 3,
+        "title": "Sức Mạnh Của Thói Quen",
+        "author": "Charles Duhigg",
+        "cat": "kynang",
+        "status": "borrowed",
+        "cover": "img/sucmanhthoiquen.png",
+        "badge": "Hot",
+        "isbn": "978-604-5678",
+        "qr": "BOOK-LV-003"
+    },
+    {
+        "id": 4,
+        "title": "Tư Duy Nhanh & Chậm",
+        "author": "Daniel Kahneman",
+        "cat": "kynang",
+        "status": "available",
+        "cover": "img/tuduynhanhcham.png",
+        "badge": null,
+        "isbn": "978-604-9012",
+        "qr": "BOOK-LV-004"
+    },
+    {
+        "id": 5,
+        "title": "Nhà Giả Kim",
+        "author": "Paulo Coelho",
+        "cat": "vanhoc",
+        "status": "available",
+        "cover": "img/nhagiakim.png",
+        "badge": "Classic",
+        "isbn": "978-604-3456",
+        "qr": "BOOK-LV-005"
+    },
+    {
+        "id": 6,
+        "title": "Dám Nghĩ Lớn",
+        "author": "David J. Schwartz",
+        "cat": "kynang",
+        "status": "reserved",
+        "cover": "img/damnghilon.png",
+        "badge": null,
+        "isbn": "978-604-7890",
+        "qr": "BOOK-LV-006"
+    },
+    {
+        "id": 7,
+        "title": "Python cho Người Mới",
+        "author": "Eric Matthes",
+        "cat": "congnghe",
+        "status": "available",
+        "cover": "img/python.png",
+        "badge": "Mới",
+        "isbn": "978-1-59327",
+        "qr": "BOOK-LV-007"
+    },
+    {
+        "id": 8,
+        "title": "Sapiens: Lược Sử Loài Người",
+        "author": "Yuval Noah Harari",
+        "cat": "lichsu",
+        "status": "available",
+        "cover": "img/sapiens.png",
+        "badge": "Best",
+        "isbn": "978-604-2222",
+        "qr": "BOOK-LV-008"
+    }
+]

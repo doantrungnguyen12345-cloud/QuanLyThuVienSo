@@ -1,0 +1,5 @@
+[
+    { "bookId": 1, "borrowDate": "12/05/2026", "dueDate": "26/05/2026", "status": "overdue", "qr": "QR-LV-001" },
+    { "bookId": 2, "borrowDate": "15/05/2026", "dueDate": "29/05/2026", "status": "soon", "qr": "QR-LV-002" },
+    { "bookId": 3, "borrowDate": "27/05/2026", "dueDate": "10/06/2026", "status": "ok", "qr": "QR-LV-003" }
+]

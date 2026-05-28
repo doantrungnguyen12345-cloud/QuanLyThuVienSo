@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LibraViet – Hệ Thống Quản Lý Thư Viện Số</title>
+    <meta name="description"
+        content="LibraViet - Hệ thống quản lý thư viện số thông minh giúp sinh viên dễ dàng tra cứu, mượn trả sách nhanh chóng qua mã QR." />
+    <meta name="keywords" content="thư viện số, quản lý thư viện, mượn sách QR, tra cứu sách, LibraViet" />
+    <meta name="author" content="Nhóm 3 SV" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="auth-locked">
+
+    <!-- AUTH PAGE -->
+    <section class="auth-page" id="authPage">
+        <div class="auth-decor auth-decor-1"></div>
+        <div class="auth-decor auth-decor-2"></div>
+
+        <div class="auth-wrap">
+            <div class="auth-intro">
+                <div class="auth-logo">Libra<span>Viet</span></div>
+                <div class="auth-marquee" aria-label="Thông điệp chào mừng">
+                    <div class="auth-marquee-track">
+                        <span>Chào mừng đến với LibraViet</span>
+                        <span>Đăng ký tài khoản sinh viên</span>
+                        <span>Đăng nhập để sử dụng thư viện số</span>
+                        <span>Tra cứu và mượn trả sách nhanh chóng</span>
+                        <span>Chào mừng đến với LibraViet</span>
+                        <span>Đăng ký tài khoản sinh viên</span>
+                        <span>Đăng nhập để sử dụng thư viện số</span>
+                        <span>Tra cứu và mượn trả sách nhanh chóng</span>
+                    </div>
+                </div>
+                <p>Đăng ký tài khoản sinh viên, sau đó đăng nhập để tra cứu sách, quét QR mượn/trả sách và xem lịch sử mượn trả.</p>
+            </div>
+
+            <div class="auth-card">
+                <div class="auth-card-head">
+                    <p class="auth-kicker">Tài khoản sinh viên</p>
+                    <h2 id="authTitle">Đăng nhập</h2>
+                    <p id="authSubtitle">Nhập tài khoản đã đăng ký để vào hệ thống.</p>
+                </div>
+
+                <div class="auth-tabs">
+                    <button type="button" class="auth-tab active" id="loginTab" onclick="switchAuthMode('login')">Đăng nhập</button>
+                    <button type="button" class="auth-tab" id="registerTab" onclick="switchAuthMode('register')">Đăng ký</button>
+                </div>
+
+                <div class="auth-message" id="authMessage"></div>
+
+                <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
+                    <label>Tài khoản</label>
+                    <input type="text" id="loginAccount" placeholder="Nhập mã sinh viên hoặc email" autocomplete="username" required>
+
+                    <label>Mật khẩu</label>
+                    <div class="auth-password-wrap">
+                        <input type="password" id="loginPassword" placeholder="Nhập mật khẩu" autocomplete="current-password" required>
+                        <button type="button" onclick="togglePassword('loginPassword', this)">Hiện</button>
+                    </div>
+
+                    <button type="submit" class="auth-submit">Đăng nhập</button>
+                    <p class="auth-note">Chưa có tài khoản? <button type="button" onclick="switchAuthMode('register')">Đăng ký ngay</button></p>
+                </form>
+
+                <form class="auth-form auth-hidden" id="registerForm" onsubmit="handleRegister(event)">
+                    <label>Họ và tên</label>
+                    <input type="text" id="regFullName" placeholder="VD: Nguyễn Văn A" autocomplete="name" required>
+
+                    <label>Mã sinh viên</label>
+                    <input type="text" id="regStudentId" placeholder="VD: SV123456" autocomplete="off" required>
+
+                    <label>Email</label>
+                    <input type="email" id="regEmail" placeholder="VD: sinhvien@email.com" autocomplete="email" required>
+
+                    <label>Mật khẩu</label>
+                    <div class="auth-password-wrap">
+                        <input type="password" id="regPassword" placeholder="Tối thiểu 6 ký tự" autocomplete="new-password" required>
+                        <button type="button" onclick="togglePassword('regPassword', this)">Hiện</button>
+                    </div>
+
+                    <label>Nhập lại mật khẩu</label>
+                    <div class="auth-password-wrap">
+                        <input type="password" id="regConfirmPassword" placeholder="Nhập lại mật khẩu" autocomplete="new-password" required>
+                        <button type="button" onclick="togglePassword('regConfirmPassword', this)">Hiện</button>
+                    </div>
+
+                    <button type="submit" class="auth-submit">Tạo tài khoản</button>
+                    <p class="auth-note">Đã có tài khoản? <button type="button" onclick="switchAuthMode('login')">Đăng nhập</button></p>
+                </form>
+
+                
+            </div>
+        </div>
+    </section>
+
+
+    <div class="topbar">
+        <!-- HEADER -->
+        <header>
+            <div class="header-inner">
+                <div class="logo">Libra<span>Viet</span></div>
+                <div class="search-bar">
+                    <span style="color:var(--gray-400)">🔍</span>
+                <input type="text" id="searchInput" placeholder="Tìm kiếm sách, tác giả, ISBN..." />
+                <button class="search-btn" onclick="doSearch()">→</button>
+            </div>
+            <div class="header-actions">
+                <!-- Lang Switch -->
+                <div class="lang-switch"
+                    style="display:flex; gap:6px; font-size:12.5px; margin-right:12px; font-weight:600; align-items:center;">
+                    <span id="lang-vi" class="lang-btn active" style="cursor:pointer; color:var(--orange);"
+                        onclick="toggleLang('vi')">Tiếng Việt</span>
+                    <span style="color:var(--gray-400)">|</span>
+                    <span id="lang-en" class="lang-btn" style="cursor:pointer; color:var(--gray-600);"
+                        onclick="toggleLang('en')">English</span>
+                </div>
+
+                <button class="btn-qr" onclick="openQRModal('scan')">
+                    Quét QR
+                </button>
+                <div class="user-profile" title="Tài khoản đang đăng nhập">
+                    <div class="user-avatar" id="userAvatar">SV</div>
+                    <div class="user-info">
+                        <strong id="userDisplayName">Sinh viên</strong>
+                        <span id="userDisplayId">Đang đăng nhập</span>
+                    </div>
+                    <button class="btn-logout" onclick="logoutUser()">Đăng xuất</button>
+                </div>
+            </div>
+        </div>
+        </header>
+
+        <!-- NAV -->
+        <nav>
+            <div class="nav-inner">
+                <div class="nav-item active" onclick="setNav(this,'all')">Trang chủ</div>
+                <div class="nav-item" onclick="setNav(this,'catalog')">Danh mục sách</div>
+                <div class="nav-item" onclick="setNav(this,'borrow')">Sách đang mượn</div>
+                <div class="nav-item" onclick="setNav(this,'history')">Lịch sử</div>
+                <div class="nav-item" onclick="setNav(this,'recommend')">Gợi ý cho bạn</div>
+            </div>
+        </nav>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main page-section active-page" id="homePage">
+
+        <!-- SIDEBAR -->
+        <aside>
+            <div class="sidebar-card stats-card">
+                <div class="sidebar-title">Thống kê của tôi</div>
+                <div class="stat-row">
+                    <div class="stat-icon">📖</div>
+                    <div>
+                        <div class="stat-label">Đang mượn</div>
+                        <div class="stat-val">3</div>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-icon">✅</div>
+                    <div>
+                        <div class="stat-label">Đã trả</div>
+                        <div class="stat-val">27</div>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <div class="stat-icon">⭐</div>
+                    <div>
+                        <div class="stat-label">Điểm tích lũy</div>
+                        <div class="stat-val">580</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-card categories-card">
+                <div class="sidebar-title">Danh mục</div>
+                <div class="cat-item active" onclick="filterCat(this,'all')">
+                    Tất cả
+                    <span class="cat-count">248</span>
+                </div>
+                <div class="cat-item" onclick="filterCat(this,'kynang')">
+                    Tư duy – Kỹ năng
+                    <span class="cat-count">54</span>
+                </div>
+                <div class="cat-item" onclick="filterCat(this,'kinhte')">
+                    Kinh tế – Tài chính
+                    <span class="cat-count">41</span>
+                </div>
+                <div class="cat-item" onclick="filterCat(this,'congnghe')">
+                    Công nghệ
+                    <span class="cat-count">63</span>
+                </div>
+                <div class="cat-item" onclick="filterCat(this,'vanhoc')">
+                    Văn học
+                    <span class="cat-count">38</span>
+                </div>
+                <div class="cat-item" onclick="filterCat(this,'khoahoc')">
+                    Khoa học
+                    <span class="cat-count">29</span>
+                </div>
+                <div class="cat-item" onclick="filterCat(this,'lichsu')">
+                    Lịch sử
+                    <span class="cat-count">23</span>
+                </div>
+            </div>
+
+            <!-- Form validation Section -->
+            <div class="sidebar-card suggest-card">
+                <div class="sidebar-title sidebar-title-suggest">Đề xuất sách mới</div>
+                <form id="suggestForm" onsubmit="validateSuggestForm(event)">
+                    <div style="margin-bottom: 8px;">
+                        <input type="text" id="sugName" placeholder="Họ và tên..."
+                            style="width:100%; padding:7px 10px; border:1.5px solid var(--gray-200); border-radius:6px; font-size:12px; outline:none;"
+                            required />
+                        <span id="errName" style="color:#DC2626; font-size:10px; display:none; margin-top:2px;">Họ tên
+                            từ 2 ký tự</span>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <input type="text" id="sugID" placeholder="Mã SV (VD: SV123456)..."
+                            style="width:100%; padding:7px 10px; border:1.5px solid var(--gray-200); border-radius:6px; font-size:12px; outline:none;"
+                            required />
+                        <span id="errID" style="color:#DC2626; font-size:10px; display:none; margin-top:2px;">Định dạng
+                            SVxxxxxx (6 số)</span>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <input type="email" id="sugEmail" placeholder="Email..."
+                            style="width:100%; padding:7px 10px; border:1.5px solid var(--gray-200); border-radius:6px; font-size:12px; outline:none;"
+                            required />
+                        <span id="errEmail" style="color:#DC2626; font-size:10px; display:none; margin-top:2px;">Email
+                            không hợp lệ</span>
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <input type="text" id="sugTitle" placeholder="Tên sách đề xuất..."
+                            style="width:100%; padding:7px 10px; border:1.5px solid var(--gray-200); border-radius:6px; font-size:12px; outline:none;"
+                            required />
+                    </div>
+                    <button type="submit"
+                        style="width:100%; background:var(--orange); color:white; border:none; padding:8px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer;">Gửi
+                        đề xuất</button>
+                    <div id="sugSuccess"
+                        style="color:#16A34A; font-size:11px; margin-top:8px; display:none; text-align:center; font-weight:600;">
+                        Gửi đề xuất thành công!</div>
+                </form>
+            </div>
+
+            <div class="sidebar-card reminders-card">
+                <div class="sidebar-title"> Nhắc nhở</div>
+                <div style="font-size:13px;color:var(--gray-600);line-height:1.7">
+                    📌 <strong style="color:var(--orange-deep)">Cơ sở dữ liệu</strong><br />
+                    &nbsp;&nbsp;Hạn trả: <span style="color:#DC2626;font-weight:600">25/05</span> (còn 6
+                    ngày)<br /><br />
+                    📌 <strong style="color:var(--orange-deep)">Clean Code</strong><br />
+                    &nbsp;&nbsp;Hạn trả: 01/06 (còn 13 ngày)
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENT -->
+        <main class="content">
+
+            <!-- Hero -->
+            <section class="banner-slider" aria-label="Banner quảng cáo">
+                <div class="banner-slide active">
+                    <img src="img/banner1.png" alt="Banner 1" />
+                    <div class="banner-overlay">
+                        <div class="hero-copy">
+                            <h1>Thư Viện Số<br />Thông Minh</h1>
+                            <p>Tìm kiếm, mượn và trả sách chỉ với 1 cú quét QR. Quản lý việc đọc sách hiệu quả.</p>
+                            <div class="hero-btns">
+                                <button class="hero-btn-primary" onclick="openQRModal('scan', 'borrow')">Mượn sách qua QR</button>
+                                <button class="hero-btn-secondary" onclick="openQRModal('scan', 'return')">Trả sách qua QR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-slide">
+                    <img src="img/banner2.png" alt="Banner 2" />
+                    <div class="banner-overlay">
+                        <div class="hero-copy">
+                            <h1>Thư Viện Số<br />Thông Minh</h1>
+                            <p>Mượn sách nhanh chóng bằng QR và theo dõi lịch sử trả mượn mọi lúc.</p>
+                            <div class="hero-btns">
+                                <button class="hero-btn-primary" onclick="openQRModal('scan', 'borrow')">Mượn sách qua QR</button>
+                                <button class="hero-btn-secondary" onclick="openQRModal('scan', 'return')">Trả sách qua QR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-slide">
+                    <img src="img/banner3.png" alt="Banner 3" />
+                    <div class="banner-overlay">
+                        <div class="hero-copy">
+                            <h1>Thư Viện Số<br />Thông Minh</h1>
+                            <p>Đọc và học mọi lúc mọi nơi với hệ thống thư viện số trực quan, dễ dùng.</p>
+                            <div class="hero-btns">
+                                <button class="hero-btn-primary" onclick="openQRModal('scan', 'borrow')">Mượn sách qua QR</button>
+                                <button class="hero-btn-secondary" onclick="openQRModal('scan', 'return')">Trả sách qua QR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="banner-dots">
+                    <button class="banner-dot active" onclick="goToBannerSlide(0)"></button>
+                    <button class="banner-dot" onclick="goToBannerSlide(1)"></button>
+                    <button class="banner-dot" onclick="goToBannerSlide(2)"></button>
+                </div>
+            </section>
+
+            <!-- Search result banner -->
+            <div class="search-results-banner" id="searchBanner"></div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab(this,'bestseller')">Bán chạy</div>
+                <div class="tab" onclick="switchTab(this,'new')">Mới nhất</div>
+                <div class="tab" onclick="switchTab(this,'return')">Vừa được trả</div>
+            </div>
+
+            <!-- Filter -->
+            <div class="filter-bar">
+                <select class="filter-select" id="genreSelect" onchange="filterBooks()">
+                    <option>Tất cả thể loại</option>
+                    <option>Tư duy – Kỹ năng</option>
+                    <option>Công nghệ</option>
+                    <option>Kinh tế</option>
+                    <option>Văn học</option>
+                </select>
+                <select class="filter-select" id="sortSelect" onchange="filterBooks()">
+                    <option>Sắp xếp: Mới nhất</option>
+                    <option>Sắp xếp: Tên A-Z</option>
+                    <option>Sắp xếp: Phổ biến</option>
+                </select>
+                <span class="tag-filter on" id="tagAvailable" onclick="toggleTag(this, 'available')">✅ Còn sách</span>
+                <span class="tag-filter" id="tagRecommend" onclick="toggleTag(this, 'recommend')">🌟 Đề xuất</span>
+            </div>
+
+            <!-- Book grid: Top sách bán chạy -->
+            <div class="section-hdr">
+                <div class="section-title"><span></span>Top Sách Phổ Biến</div>
+                <a class="view-all" href="#"
+                    onclick="event.preventDefault(); setNav(document.querySelector('.nav-item:nth-child(2)'), 'catalog')">Xem
+                    tất cả →</a>
+            </div>
+            <div class="book-grid" id="bookGrid">
+            </div>
+
+        </main>
+    </div>
+
+
+    <!-- PAGE: SÁCH ĐANG MƯỢN -->
+    <div class="main page-section borrow-page" id="borrowPage">
+        <main class="content content-full">
+            <div class="borrow-page-hero">
+                <div>
+                    <div class="page-eyebrow">QUẢN LÝ MƯỢN TRẢ</div>
+                    <h1>Sách Đang Mượn</h1>
+                    <p>Theo dõi sách bạn đang mượn, xem mã QR, gia hạn, trả sách hoặc đọc sách online tại một trang riêng.</p>
+                </div>
+                <div class="borrow-page-actions">
+                    <button class="page-btn page-btn-primary" onclick="openQRModal('scan', 'borrow')">Mượn sách qua QR</button>
+                    <button class="page-btn page-btn-light" onclick="setNav(document.querySelector('.nav-item:nth-child(1)'), 'all')">← Về trang chủ</button>
+                </div>
+            </div>
+
+            <div class="section-hdr borrow-section-header">
+                <div class="section-title"><span></span>Danh Sách Sách Đang Mượn</div>
+                <a class="view-all" href="#"
+                    onclick="event.preventDefault(); setNav(document.querySelector('.nav-item:nth-child(4)'), 'history')">Xem
+                    lịch sử →</a>
+            </div>
+            <div class="borrow-table-wrap borrow-page-table">
+                <table class="borrow-table">
+                    <thead>
+                        <tr>
+                            <th>Sách</th>
+                            <th>Mã QR</th>
+                            <th>Ngày mượn</th>
+                            <th>Hạn trả</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="borrowTable">
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+
+
+    <!-- PAGE: LỊCH SỬ MƯỢN TRẢ -->
+    <div class="main page-section history-page" id="historyPage">
+        <main class="content content-full">
+            <div class="history-page-hero">
+                <div>
+                    <div class="page-eyebrow">NHẬT KÝ THƯ VIỆN</div>
+                    <h1>Lịch Sử Mượn Trả</h1>
+                    <p>Lưu lại đầy đủ những cuốn sách bạn đã mượn và đã trả trong 30 ngày gần đây. Dữ liệu được lưu trên trình duyệt để bạn dễ theo dõi lại.</p>
+                </div>
+                <div class="borrow-page-actions">
+                    <button class="page-btn page-btn-primary" onclick="openQRModal('scan', 'borrow')">+ Mượn sách qua QR</button>
+                    <button class="page-btn page-btn-light" onclick="setNav(document.querySelector('.nav-item:nth-child(1)'), 'all')">← Về trang chủ</button>
+                </div>
+            </div>
+
+            <div class="history-summary-grid">
+                <div class="history-stat-card">
+                    <span class="history-stat-icon">📚</span>
+                    <div>
+                        <p>Tổng giao dịch</p>
+                        <strong id="historyTotal">0</strong>
+                    </div>
+                </div>
+                <div class="history-stat-card">
+                    <span class="history-stat-icon">📥</span>
+                    <div>
+                        <p>Lượt mượn</p>
+                        <strong id="historyBorrowCount">0</strong>
+                    </div>
+                </div>
+                <div class="history-stat-card">
+                    <span class="history-stat-icon">📤</span>
+                    <div>
+                        <p>Lượt trả</p>
+                        <strong id="historyReturnCount">0</strong>
+                    </div>
+                </div>
+                <div class="history-stat-card">
+                    <span class="history-stat-icon">🗓️</span>
+                    <div>
+                        <p>Trong 30 ngày</p>
+                        <strong id="historyThisMonthCount">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-toolbar">
+                <div>
+                    <div class="section-title"><span></span>Hoạt Động Trong Tháng Vừa Qua</div>
+                    <p>Lịch sử sẽ tự cập nhật sau mỗi lần mượn hoặc trả sách bằng QR.</p>
+                </div>
+                <select class="filter-select history-filter" id="historyFilter" onchange="renderHistoryPage()">
+                    <option value="last30">30 ngày gần đây</option>
+                    <option value="all">Tất cả lịch sử</option>
+                    <option value="borrow">Chỉ sách đã mượn</option>
+                    <option value="return">Chỉ sách đã trả</option>
+                </select>
+            </div>
+
+            <div class="history-table-wrap">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Sách</th>
+                            <th>Giao dịch</th>
+                            <th>Ngày mượn</th>
+                            <th>Hạn trả</th>
+                            <th>Ngày trả</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTable"></tbody>
+                </table>
+                <div class="history-empty" id="historyEmpty" style="display:none;">
+                    <div class="history-empty-icon">🗂️</div>
+                    <h3>Chưa có lịch sử trong tháng vừa qua</h3>
+                    <p>Khi bạn mượn hoặc trả sách bằng QR, hệ thống sẽ tự lưu lại tại đây.</p>
+                    <button class="page-btn page-btn-primary orange-btn" onclick="openQRModal('scan', 'borrow')">Quét QR để mượn sách</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- QR MODAL -->
+    <div class="modal-overlay" id="qrModal" onclick="closeModalOutside(event)">
+        <div class="modal">
+            <div class="modal-emoji" id="qrEmoji"></div>
+            <div class="modal-title" id="qrTitle">Quét Mã QR</div>
+            <div class="modal-sub" id="qrSub">Đưa mã QR trên sách vào camera</div>
+            <div class="qr-code" id="qrDisplay">
+            </div>
+            <div class="modal-info" id="qrInfo"></div>
+            <button class="btn-close-modal" onclick="closeModal()">Đóng</button>
+        </div>
+    </div>
+    <div class="reader-overlay" id="readerOverlay">
+        <div class="reader-container">
+            <div class="reader-header">
+                <div class="reader-book-info">
+                    <button class="reader-back-btn" onclick="closeReader()">←</button>
+                    <div>
+                        <h3 id="readerBookTitle">Tên Sách</h3>
+                        <div id="readerBookAuthor" style="font-size:12px;color:var(--gray-400)">Tác giả</div>
+                    </div>
+                </div>
+                <div class="reader-controls">
+                    <button class="reader-ctrl-btn mobile-toc-btn" onclick="toggleReaderSidebar()"
+                        title="Mục lục">📖</button>
+                    <div class="reader-control-group">
+                        <button class="reader-ctrl-btn" onclick="changeFontSize(-1)" title="Giảm cỡ chữ">A-</button>
+                        <span class="reader-font-size-indicator" id="fontSizeIndicator">16px</span>
+                        <button class="reader-ctrl-btn" onclick="changeFontSize(1)" title="Tăng cỡ chữ">A+</button>
+                    </div>
+                    <div class="reader-control-group"
+                        style="border-left: 1px solid var(--gray-200); padding-left: 12px;">
+                        <div class="reader-theme-dots">
+                            <span class="theme-dot theme-light active" onclick="changeReaderTheme('light')"
+                                title="Sáng"></span>
+                            <span class="theme-dot theme-sepia" onclick="changeReaderTheme('sepia')"
+                                title="Cổ điển"></span>
+                            <span class="theme-dot theme-dark" onclick="changeReaderTheme('dark')" title="Tối"></span>
+                        </div>
+                    </div>
+                    <button class="reader-close-btn" onclick="closeReader()" title="Đóng trình đọc">✕</button>
+                </div>
+            </div>
+            <div class="reader-main">
+                <aside class="reader-sidebar">
+                    <h4
+                        style="font-size:12px; text-transform:uppercase; color:var(--orange); letter-spacing:1px; margin-bottom:12px;">
+                        Mục Lục</h4>
+                    <ul id="readerChaptersList">
+                    </ul>
+                </aside>
+                <div class="reader-content-wrap">
+                    <div class="reader-content" id="readerContent">
+                    </div>
+                </div>
+            </div>
+            <div class="reader-footer">
+                <button class="reader-nav-btn" id="prevPageBtn" onclick="prevPage()">← Trang trước</button>
+                <span class="reader-page-num" id="readerPageNum">Trang 1 / 1</span>
+                <button class="reader-nav-btn" id="nextPageBtn" onclick="nextPage()">Trang sau →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-main">
+            <div class="footer-brand">
+                <div class="footer-logo">Libra<span>Viet</span></div>
+                <p>Hệ thống quản lý thư viện số giúp sinh viên tra cứu, mượn trả sách bằng QR và đọc sách online nhanh chóng.</p>
+                <div class="footer-socials">
+                    <a href="#" aria-label="Facebook">f</a>
+                    <a href="#" aria-label="Email">@</a>
+                    <a href="#" aria-label="Website">🌐</a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Liên kết nhanh</h4>
+                <a href="#" onclick="event.preventDefault(); setNav(document.querySelector('.nav-item:nth-child(1)'), 'all')">Trang chủ</a>
+                <a href="#" onclick="event.preventDefault(); setNav(document.querySelector('.nav-item:nth-child(2)'), 'catalog')">Danh mục sách</a>
+                <a href="#" onclick="event.preventDefault(); setNav(document.querySelector('.nav-item:nth-child(3)'), 'borrow')">Sách đang mượn</a>
+                <a href="#" onclick="event.preventDefault(); setNav(document.querySelector('.nav-item:nth-child(4)'), 'history')">Lịch sử mượn trả</a>
+            </div>
+
+            <div class="footer-col">
+                <h4>Dịch vụ thư viện</h4>
+                <a href="#" onclick="event.preventDefault(); openQRModal('scan', 'borrow')">Mượn sách bằng QR</a>
+                <a href="#" onclick="event.preventDefault(); openQRModal('scan', 'return')">Trả sách bằng QR</a>
+                <a href="#" onclick="event.preventDefault(); setNav(document.querySelector('.nav-item:nth-child(2)'), 'catalog')">Đọc sách online</a>
+                <a href="#" onclick="event.preventDefault(); setNav(document.querySelector('.nav-item:nth-child(5)'), 'recommend')">Gợi ý sách hay</a>
+            </div>
+
+            <div class="footer-col footer-contact">
+                <h4>Thông tin liên hệ</h4>
+                <p>📍 Trường Đại học Tây Nguyên</p>
+                <p>📞 0123456789</p>
+                <p>✉️ nhom18@ttn.edu.vn</p>
+                <p>⏰ Thứ 2 - Thứ 7: 07:30 - 17:00</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 LibraViet. Xây dựng bởi Nhóm 18 Lớp CNTT K24.</span>
+            <span>Điều khoản sử dụng · Chính sách bảo mật · Hỗ trợ sinh viên</span>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
