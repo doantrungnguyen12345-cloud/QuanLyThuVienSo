@@ -1300,7 +1300,7 @@ function openQRModal(mode, extra, bookId) {
 
         info.innerHTML = `
 <div id="scannerStatus" class="scanner-status scanner-status-wait">
-    ${currentLang === 'vi' ? 'Đang chuẩn bị mở camera...' : 'Preparing camera...'}
+   ${currentLang === 'vi' ? 'Bấm nút Bật camera để quét QR trên điện thoại.' : 'Tap Start camera to scan QR on your phone.'}
 </div>
 <div class="scanner-tools">
     <button class="btn-scan-action scanner-tool-btn" onclick="startBookScanner()">📷 ${currentLang === 'vi' ? 'Bật camera' : 'Start camera'}</button>
@@ -1331,14 +1331,20 @@ function openQRModal(mode, extra, bookId) {
     </button>
 </details>
 <div class="scanner-note">
-    ${currentLang === 'vi'
-            ? 'Lưu ý: camera chỉ hoạt động khi chạy bằng Live Server/localhost hoặc HTTPS, không nên mở trực tiếp bằng file://.'
-            : 'Note: camera works on Live Server/localhost or HTTPS, not from file://.'}
+   ${currentLang === 'vi'
+    ? 'Lưu ý: trên điện thoại phải mở bằng link HTTPS như Vercel/Netlify. Không mở bằng file://, http://IP máy tính, Zalo hoặc Messenger.'
+    : 'Note: on phone, open with HTTPS such as Vercel/Netlify. Do not use file://, local IP, Zalo or Messenger.'}
 </div>`;
 
-        modal.classList.add('open');
-        setTimeout(() => startBookScanner(), 250);
-        return;
+       modal.classList.add('open');
+
+showScannerStatus(currentLang === 'vi'
+    ? 'Bấm nút <strong>Bật camera</strong>, cho phép quyền camera, rồi đưa mã QR vào khung.'
+    : 'Tap <strong>Start camera</strong>, allow camera permission, then put the QR inside the frame.',
+    'wait'
+);
+
+return;
     }
 
     if (mode === 'bookQr') {
