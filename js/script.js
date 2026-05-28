@@ -1308,6 +1308,21 @@ function openQRModal(mode, extra, bookId) {
 </div>
 <details class="scanner-fallback-panel">
     <summary>${currentLang === 'vi' ? 'Không quét được? Chọn sách để chạy thử' : 'Camera not working? Select a book for demo'}</summary>
+
+    <div class="scanner-phone-actions">
+        <label class="btn-scan-action scanner-upload-btn" for="qrImageInput">
+            🖼 ${currentLang === 'vi' ? 'Chọn/chụp ảnh QR trên điện thoại' : 'Choose/capture QR image'}
+        </label>
+        <input 
+            type="file" 
+            id="qrImageInput" 
+            class="qr-image-input" 
+            accept="image/*" 
+            capture="environment" 
+            onchange="handleQRImageUpload(event)"
+        >
+    </div>
+
     <select class="scan-select" id="scanBookSelect" onchange="onScanBookChange(this.value)">
         ${buildScanOptions(scanPurpose)}
     </select>
@@ -1451,7 +1466,12 @@ function loadHtml5QrcodeScript() {
 }
 
 function isCameraContextAllowed() {
-    return location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    // Camera chỉ chạy tốt trên HTTPS hoặc localhost
+    // Trên điện thoại nếu mở bằng http://IP-máy-tính thường sẽ bị chặn
+    return window.isSecureContext 
+        || location.protocol === 'https:' 
+        || location.hostname === 'localhost' 
+        || location.hostname === '127.0.0.1';
 }
 
 function showScannerStatus(message, type = 'wait') {
@@ -1480,11 +1500,13 @@ async function startBookScanner(purpose) {
     }
 
     if (!isCameraContextAllowed()) {
-        showScannerStatus(currentLang === 'vi'
-            ? 'Bạn đang mở bằng file:// nên camera có thể bị chặn. Hãy chạy bằng VS Code Live Server hoặc lệnh: <code>python -m http.server 5500</code> rồi mở <code>http://localhost:5500</code>.'
-            : 'You are opening the page from file://, so camera may be blocked. Use VS Code Live Server or run <code>python -m http.server 5500</code>, then open <code>http://localhost:5500</code>.', 'error');
-        return;
-    }
+    showScannerStatus(currentLang === 'vi'
+        ? 'Trình duyệt đang chặn camera vì web chưa chạy bằng HTTPS/localhost. Trên điện thoại hãy deploy lên Vercel/Netlify hoặc dùng ngrok HTTPS. Tạm thời bạn có thể bấm <strong>Chọn/chụp ảnh QR trên điện thoại</strong> ở bên dưới.'
+        : 'The browser is blocking the camera because this page is not served via HTTPS/localhost. On phone, deploy to Vercel/Netlify or use ngrok HTTPS. You can still use <strong>Choose/capture QR image</strong> below.', 
+        'error'
+    );
+    return;
+}
 
     showScannerStatus(currentLang === 'vi' ? 'Đang xin quyền camera...' : 'Requesting camera permission...', 'wait');
 
@@ -1716,7 +1738,65 @@ function completeScannedBookTransaction(bookId) {
     }
     setTimeout(() => executeTransaction(Number(bookId)), 250);
 }
+async function handleQRImageUpload(event) {
+    const input = event && event.target;
+    const file = input && input.files && input.files[0];
 
+    if (!file) return;
+
+    showScannerStatus(currentLang === 'vi'
+        ? 'Đang đọc mã QR từ ảnh bạn chọn...'
+        : 'Reading QR code from selected image...', 
+        'wait'
+    );
+
+    await stopBookScanner(false);
+    await loadHtml5QrcodeScript();
+
+    if (!window.Html5Qrcode) {
+        showScannerStatus(currentLang === 'vi'
+            ? 'Không tải được thư viện đọc QR. Hãy kiểm tra internet hoặc thử dùng camera trên HTTPS.'
+            : 'Could not load the QR reader library. Check internet or try camera on HTTPS.', 
+            'error'
+        );
+
+        input.value = '';
+        return;
+    }
+
+    try {
+        const tempId = 'qrImageFileReader';
+        let tempReader = document.getElementById(tempId);
+
+        if (!tempReader) {
+            tempReader = document.createElement('div');
+            tempReader.id = tempId;
+            tempReader.style.display = 'none';
+            document.body.appendChild(tempReader);
+        }
+
+        const imageScanner = new Html5Qrcode(tempId);
+        const decodedText = await imageScanner.scanFile(file, true);
+
+        try {
+            await imageScanner.clear();
+        } catch (e) {}
+
+        handleScannedQRCode(decodedText);
+
+    } catch (err) {
+        console.warn('QR image scan failed:', err);
+
+        showScannerStatus(currentLang === 'vi'
+            ? 'Không đọc được QR từ ảnh này. Hãy chụp rõ mã QR, đủ sáng, không bị nghiêng quá nhiều.'
+            : 'Could not read a QR code from this image. Take a clearer, brighter photo of the QR code.', 
+            'error'
+        );
+
+    } finally {
+        input.value = '';
+    }
+}
 function onScanBookChange(bookId) {
     const btn = document.getElementById('btnExecuteScan');
     if (!btn) return;

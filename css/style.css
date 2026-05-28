@@ -3681,3 +3681,39 @@ nav {
         font-size: 12.5px;
     }
 }
+/* ===== QR PHONE IMAGE FALLBACK ===== */
+
+.scanner-phone-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px 0 12px;
+}
+
+.qr-image-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.scanner-upload-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+    text-align: center;
+}
+
+@media (max-width: 520px) {
+    .scanner-phone-actions {
+        gap: 8px;
+    }
+
+    .scanner-upload-btn {
+        font-size: 13px;
+        padding: 11px 12px;
+    }
+}
