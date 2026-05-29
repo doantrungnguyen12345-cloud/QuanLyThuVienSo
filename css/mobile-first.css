@@ -1028,3 +1028,1014 @@ aside {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 }
+/* =====================================================
+   FIX RESPONSIVE LAPTOP + ĐIỆN THOẠI
+   Dán cuối file mobile-first.css
+===================================================== */
+
+/* ---------- LAPTOP / DESKTOP ---------- */
+@media (min-width: 769px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .header-inner {
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        gap: 18px !important;
+        padding: 12px 24px !important;
+    }
+
+    .logo {
+        order: 1 !important;
+        flex: 0 0 auto !important;
+        font-size: 26px !important;
+    }
+
+    .search-bar {
+        order: 2 !important;
+        flex: 1 1 420px !important;
+        width: auto !important;
+        max-width: 540px !important;
+    }
+
+    .header-actions {
+        order: 3 !important;
+        flex: 0 0 auto !important;
+        margin-left: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+
+    .lang-switch {
+        display: flex !important;
+    }
+
+    .nav-inner {
+        max-width: 1280px !important;
+        margin: 0 auto !important;
+        padding: 10px 24px !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    #homePage.active-page {
+        display: grid !important;
+        grid-template-columns: 250px minmax(0, 1fr) !important;
+        gap: 28px !important;
+    }
+
+    #homePage aside,
+    #homePage .content {
+        min-width: 0 !important;
+    }
+
+    /* Sửa lỗi phần đọc sách trên laptop */
+    .reader-overlay.open {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .reader-container {
+        width: min(1100px, 92vw) !important;
+        height: 82vh !important;
+        border-radius: 18px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    .reader-header {
+        flex-wrap: nowrap !important;
+        padding: 16px 28px !important;
+        gap: 16px !important;
+    }
+
+    .reader-main {
+        flex: 1 !important;
+        display: grid !important;
+        grid-template-columns: 260px minmax(0, 1fr) !important;
+        position: static !important;
+        overflow: hidden !important;
+    }
+
+    .reader-sidebar {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        left: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        z-index: auto !important;
+        display: block !important;
+        background: var(--gray-50) !important;
+        border-right: 1.5px solid var(--gray-200) !important;
+        padding: 24px 20px !important;
+        overflow-y: auto !important;
+        box-shadow: none !important;
+    }
+
+    .reader-content-wrap {
+        min-width: 0 !important;
+        width: auto !important;
+        padding: 40px 60px !important;
+        overflow-y: auto !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .reader-content {
+        width: 100% !important;
+        max-width: 780px !important;
+        padding: 0 !important;
+        font-size: 16px !important;
+        line-height: 1.8 !important;
+    }
+
+    .reader-content h2,
+    .reader-content h3 {
+        word-break: normal !important;
+        overflow-wrap: normal !important;
+    }
+
+    .reader-content p {
+        text-align: justify !important;
+        word-break: normal !important;
+        overflow-wrap: break-word !important;
+    }
+
+    .mobile-toc-btn {
+        display: none !important;
+    }
+}
+
+/* ---------- TABLET / ĐIỆN THOẠI ---------- */
+@media (max-width: 768px) {
+    .header-inner {
+        flex-wrap: wrap !important;
+        padding: 10px 12px !important;
+    }
+
+    .logo {
+        order: 1 !important;
+        font-size: 23px !important;
+    }
+
+    .header-actions {
+        order: 2 !important;
+        margin-left: auto !important;
+    }
+
+    .search-bar {
+        order: 3 !important;
+        width: 100% !important;
+        max-width: none !important;
+        flex: 0 0 100% !important;
+    }
+
+    .user-info {
+        display: none !important;
+    }
+
+    .nav-inner {
+        display: flex !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        padding: 8px 12px !important;
+        gap: 8px !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-inner::-webkit-scrollbar {
+        display: none;
+    }
+
+    #homePage.active-page {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    #homePage .content {
+        order: 1 !important;
+    }
+
+    #homePage aside {
+        order: 2 !important;
+    }
+
+    .reader-container {
+        width: 100vw !important;
+        height: 100vh !important;
+        border-radius: 0 !important;
+    }
+
+    .reader-header {
+        padding: 10px 12px !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .reader-main {
+        display: block !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    .reader-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        width: 260px !important;
+        height: 100vh !important;
+        z-index: 9999 !important;
+        background: white !important;
+        box-shadow: 12px 0 34px rgba(15, 23, 42, .18) !important;
+        transition: .25s ease !important;
+        padding: 22px 18px !important;
+    }
+
+    .reader-sidebar.mobile-open {
+        left: 0 !important;
+    }
+
+    .reader-content-wrap {
+        width: 100% !important;
+        padding: 18px 16px !important;
+        overflow-y: auto !important;
+        display: block !important;
+    }
+
+    .reader-content {
+        max-width: 100% !important;
+        padding: 0 !important;
+        font-size: 16px !important;
+        line-height: 1.75 !important;
+    }
+
+    .reader-content p {
+        text-align: left !important;
+    }
+
+    .reader-footer {
+        padding: 10px 12px !important;
+        gap: 8px !important;
+    }
+
+    .reader-nav-btn {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+    }
+
+    .mobile-toc-btn {
+        display: flex !important;
+    }
+}
+/* =====================================================
+   FIX RESPONSIVE LAPTOP + ĐIỆN THOẠI
+===================================================== */
+
+/* ---------- LAPTOP / DESKTOP ---------- */
+@media (min-width: 769px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .header-inner {
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        gap: 18px !important;
+        padding: 12px 24px !important;
+    }
+
+    .logo {
+        order: 1 !important;
+        flex: 0 0 auto !important;
+        font-size: 26px !important;
+    }
+
+    .search-bar {
+        order: 2 !important;
+        flex: 1 1 420px !important;
+        width: auto !important;
+        max-width: 540px !important;
+    }
+
+    .header-actions {
+        order: 3 !important;
+        flex: 0 0 auto !important;
+        margin-left: auto !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 12px !important;
+    }
+
+    .lang-switch {
+        display: flex !important;
+    }
+
+    .nav-inner {
+        max-width: 1280px !important;
+        margin: 0 auto !important;
+        padding: 10px 24px !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    #homePage.active-page {
+        display: grid !important;
+        grid-template-columns: 250px minmax(0, 1fr) !important;
+        gap: 28px !important;
+    }
+
+    #homePage aside,
+    #homePage .content {
+        min-width: 0 !important;
+    }
+
+    .reader-overlay.open {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .reader-container {
+        width: min(1200px, 95vw) !important;
+        height: 90vh !important;
+        border-radius: 18px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    .reader-header {
+        flex-wrap: nowrap !important;
+        padding: 16px 28px !important;
+        gap: 16px !important;
+    }
+
+    .reader-main {
+        flex: 1 !important;
+        display: grid !important;
+        grid-template-columns: 260px minmax(0, 1fr) !important;
+        position: static !important;
+        overflow: hidden !important;
+    }
+
+    .reader-sidebar {
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        left: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+        z-index: auto !important;
+        display: block !important;
+        background: var(--gray-50) !important;
+        border-right: 1.5px solid var(--gray-200) !important;
+        padding: 24px 20px !important;
+        overflow-y: auto !important;
+        box-shadow: none !important;
+    }
+
+    .reader-content-wrap {
+        min-width: 0 !important;
+        width: auto !important;
+        padding: 40px 60px !important;
+        overflow-y: auto !important;
+        display: flex !important;
+        justify-content: center !important;
+    }
+
+    .reader-content {
+        width: 100% !important;
+        max-width: 780px !important;
+        padding: 0 !important;
+        font-size: 16px !important;
+        line-height: 1.8 !important;
+    }
+
+    .reader-content h2,
+    .reader-content h3 {
+        word-break: normal !important;
+        overflow-wrap: normal !important;
+    }
+
+    .reader-content p {
+        text-align: justify !important;
+        word-break: normal !important;
+        overflow-wrap: break-word !important;
+    }
+
+    .mobile-toc-btn {
+        display: none !important;
+    }
+}
+
+/* ---------- TABLET / ĐIỆN THOẠI ---------- */
+@media (max-width: 768px) {
+    .header-inner {
+        flex-wrap: wrap !important;
+        padding: 10px 12px !important;
+    }
+
+    .logo {
+        order: 1 !important;
+        font-size: 23px !important;
+    }
+
+    .header-actions {
+        order: 2 !important;
+        margin-left: auto !important;
+    }
+
+    .search-bar {
+        order: 3 !important;
+        width: 100% !important;
+        max-width: none !important;
+        flex: 0 0 100% !important;
+    }
+
+    .user-info {
+        display: none !important;
+    }
+
+    .nav-inner {
+        display: flex !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        padding: 8px 12px !important;
+        gap: 8px !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-inner::-webkit-scrollbar {
+        display: none;
+    }
+
+    #homePage.active-page {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    #homePage .content {
+        order: 1 !important;
+    }
+
+    #homePage aside {
+        order: 2 !important;
+    }
+
+    .reader-container {
+        width: 100vw !important;
+        height: 100vh !important;
+        border-radius: 0 !important;
+    }
+
+    .reader-header {
+        padding: 10px 12px !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .reader-main {
+        display: block !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    .reader-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        width: 260px !important;
+        height: 100vh !important;
+        z-index: 9999 !important;
+        background: white !important;
+        box-shadow: 12px 0 34px rgba(15, 23, 42, .18) !important;
+        transition: .25s ease !important;
+        padding: 22px 18px !important;
+    }
+
+    .reader-sidebar.mobile-open {
+        left: 0 !important;
+    }
+
+    .reader-content-wrap {
+        width: 100% !important;
+        padding: 18px 16px !important;
+        overflow-y: auto !important;
+        display: block !important;
+    }
+
+    .reader-content {
+        max-width: 100% !important;
+        padding: 0 !important;
+        font-size: 16px !important;
+        line-height: 1.75 !important;
+    }
+
+    .reader-content p {
+        text-align: left !important;
+    }
+
+    .reader-footer {
+        padding: 10px 12px !important;
+        gap: 8px !important;
+    }
+
+    .reader-nav-btn {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+    }
+
+    .mobile-toc-btn {
+        display: flex !important;
+    }
+}
+.reader-back-btn,
+.reader-close-btn {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 999 !important;
+}
+/* ===== FIX READER FONT + THEME RESPONSIVE ===== */
+
+.reader-content {
+    font-size: var(--reader-font-size, 16px) !important;
+    line-height: 1.8 !important;
+}
+
+.reader-content h2,
+.reader-content h3 {
+    font-size: calc(var(--reader-font-size, 16px) + 8px) !important;
+}
+
+.reader-font-size-indicator {
+    min-width: 46px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* Màu nền đọc sách */
+.reader-theme-light .reader-content-wrap {
+    background: #ffffff !important;
+}
+
+.reader-theme-light .reader-content {
+    color: #334155 !important;
+}
+
+.reader-theme-sepia .reader-content-wrap {
+    background: #fbf6ec !important;
+}
+
+.reader-theme-sepia .reader-content {
+    color: #4a3e25 !important;
+}
+
+.reader-theme-dark .reader-content-wrap {
+    background: #1e293b !important;
+}
+
+.reader-theme-dark .reader-content {
+    color: #cbd5e1 !important;
+}
+
+/* Nút đọc sách trên điện thoại */
+@media (max-width: 600px) {
+    .reader-header {
+        align-items: flex-start !important;
+    }
+
+    .reader-controls {
+        width: 100% !important;
+        justify-content: space-between !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    .reader-control-group {
+        background: rgba(255, 255, 255, 0.08) !important;
+        border-radius: 10px !important;
+    }
+
+    .reader-ctrl-btn {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 13px !important;
+    }
+
+    .theme-dot {
+        width: 24px !important;
+        height: 24px !important;
+    }
+
+    .reader-content-wrap {
+        padding: 18px 16px !important;
+    }
+}
+/* ===== FOOTER MÀU CAM ===== */
+
+.site-footer {
+    background: linear-gradient(135deg, #f97316, #ea580c) !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.footer-logo {
+    color: #ffffff !important;
+}
+
+.footer-logo span {
+    color: #fff7ed !important;
+}
+
+.footer-brand p,
+.footer-col a,
+.footer-col p,
+.footer-bottom {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.footer-col h4 {
+    color: #ffffff !important;
+}
+
+.footer-col h4::after {
+    background: #ffffff !important;
+}
+
+.footer-socials a {
+    background: rgba(255, 255, 255, 0.18) !important;
+    color: #ffffff !important;
+}
+
+.footer-socials a:hover {
+    background: #ffffff !important;
+    color: #ea580c !important;
+}
+
+.footer-col a:hover {
+    color: #ffffff !important;
+    transform: translateX(3px);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+/* ===== FIX ĐỌC SÁCH ONLINE: HIỆN A-/A+, ĐỔI NỀN, THOÁT ===== */
+
+body.reader-open {
+    overflow: hidden !important;
+}
+
+body.reader-open .topbar {
+    display: none !important;
+}
+
+.reader-overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 999999 !important;
+    background: rgba(15, 23, 42, 0.96) !important;
+    display: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+}
+
+.reader-overlay.open {
+    display: flex !important;
+}
+
+.reader-container {
+    width: 96vw !important;
+    max-width: 1200px !important;
+    height: 94vh !important;
+    background: #ffffff !important;
+    border-radius: 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+}
+
+.reader-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    min-height: 72px !important;
+    padding: 14px 22px !important;
+    background: #ffffff !important;
+    border-bottom: 1.5px solid #e5e7eb !important;
+    position: relative !important;
+    z-index: 50 !important;
+    flex-shrink: 0 !important;
+}
+
+.reader-book-info {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    min-width: 0 !important;
+}
+
+#readerBookTitle {
+    max-width: 340px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.reader-controls {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+    z-index: 80 !important;
+}
+
+.reader-control-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.reader-theme-control {
+    border-left: 1.5px solid #e5e7eb !important;
+    padding-left: 10px !important;
+}
+
+.reader-ctrl-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    border: 1.5px solid #e5e7eb !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    border-radius: 8px !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    font-size: 13px !important;
+}
+
+.reader-ctrl-btn:hover {
+    border-color: #f97316 !important;
+    color: #f97316 !important;
+    background: #fff7ed !important;
+}
+
+.reader-font-size-indicator {
+    display: inline-block !important;
+    min-width: 48px !important;
+    text-align: center !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    color: #4b5563 !important;
+}
+
+.theme-dot {
+    display: inline-block !important;
+    width: 25px !important;
+    height: 25px !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    border: 2px solid transparent !important;
+}
+
+.theme-dot.active {
+    border-color: #f97316 !important;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, .18) !important;
+}
+
+.theme-light {
+    background: #f8fafc !important;
+    box-shadow: inset 0 0 0 1px #cbd5e1 !important;
+}
+
+.theme-sepia {
+    background: #f4ead4 !important;
+    box-shadow: inset 0 0 0 1px #d6b980 !important;
+}
+
+.theme-dark {
+    background: #1e293b !important;
+    box-shadow: inset 0 0 0 1px #475569 !important;
+}
+
+.reader-back-btn,
+.reader-close-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    cursor: pointer !important;
+    z-index: 100 !important;
+}
+
+.reader-back-btn {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+    font-size: 20px !important;
+}
+
+.reader-close-btn {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    background: #fff7ed !important;
+    color: #ea580c !important;
+    font-size: 22px !important;
+    font-weight: 900 !important;
+}
+
+.reader-close-btn:hover,
+.reader-back-btn:hover {
+    background: #f97316 !important;
+    color: #ffffff !important;
+}
+
+.reader-main {
+    flex: 1 !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: 260px 1fr !important;
+    overflow: hidden !important;
+}
+
+.reader-content-wrap {
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    padding: 40px 60px !important;
+    background: #ffffff !important;
+}
+
+.reader-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    flex-shrink: 0 !important;
+    min-height: 64px !important;
+    padding: 14px 22px !important;
+    background: #ffffff !important;
+    border-top: 1.5px solid #e5e7eb !important;
+    z-index: 40 !important;
+}
+
+.reader-nav-btn {
+    border: none !important;
+    background: #f97316 !important;
+    color: #ffffff !important;
+    padding: 9px 20px !important;
+    border-radius: 999px !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+}
+
+.reader-nav-btn:disabled {
+    background: #e5e7eb !important;
+    color: #9ca3af !important;
+    cursor: not-allowed !important;
+}
+
+/* Nền sáng */
+.reader-theme-light .reader-container,
+.reader-theme-light .reader-header,
+.reader-theme-light .reader-footer {
+    background: #ffffff !important;
+    color: #111827 !important;
+}
+
+.reader-theme-light .reader-content-wrap {
+    background: #ffffff !important;
+}
+
+.reader-theme-light .reader-content {
+    color: #334155 !important;
+}
+
+/* Nền vàng */
+.reader-theme-sepia .reader-container,
+.reader-theme-sepia .reader-header,
+.reader-theme-sepia .reader-footer {
+    background: #f4ead4 !important;
+    color: #4a3e25 !important;
+}
+
+.reader-theme-sepia .reader-sidebar {
+    background: #efe4cd !important;
+}
+
+.reader-theme-sepia .reader-content-wrap {
+    background: #fbf6ec !important;
+}
+
+.reader-theme-sepia .reader-content {
+    color: #4a3e25 !important;
+}
+
+/* Nền tối */
+.reader-theme-dark .reader-container,
+.reader-theme-dark .reader-header,
+.reader-theme-dark .reader-footer {
+    background: #0f172a !important;
+    color: #e2e8f0 !important;
+}
+
+.reader-theme-dark .reader-sidebar {
+    background: #0b0f19 !important;
+    border-color: #1e293b !important;
+}
+
+.reader-theme-dark .reader-content-wrap {
+    background: #1e293b !important;
+}
+
+.reader-theme-dark .reader-content,
+.reader-theme-dark .reader-page-num,
+.reader-theme-dark .reader-font-size-indicator {
+    color: #cbd5e1 !important;
+}
+
+.reader-theme-dark .reader-content h2,
+.reader-theme-dark .reader-content h3 {
+    color: #f8fafc !important;
+}
+
+@media (max-width: 768px) {
+    .reader-container {
+        width: 100vw !important;
+        height: 100vh !important;
+        border-radius: 0 !important;
+    }
+
+    .reader-header {
+        padding: 10px 12px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .reader-book-info {
+        width: 100% !important;
+    }
+
+    #readerBookTitle {
+        max-width: 240px !important;
+        font-size: 15px !important;
+    }
+
+    .reader-controls {
+        width: 100% !important;
+        justify-content: space-between !important;
+    }
+
+    .reader-main {
+        grid-template-columns: 1fr !important;
+    }
+
+    .reader-sidebar {
+        position: absolute !important;
+        top: 0 !important;
+        left: -280px !important;
+        bottom: 0 !important;
+        width: 280px !important;
+        z-index: 200 !important;
+        transition: left .3s ease !important;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, .2) !important;
+    }
+
+    .reader-sidebar.mobile-open {
+        left: 0 !important;
+    }
+
+    .reader-content-wrap {
+        padding: 18px 14px !important;
+    }
+
+    .reader-footer {
+        padding: 10px 12px !important;
+    }
+
+    .reader-nav-btn {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+}

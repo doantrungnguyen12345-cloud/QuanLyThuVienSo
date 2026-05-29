@@ -188,21 +188,21 @@
                     <div class="stat-icon">📖</div>
                     <div>
                         <div class="stat-label">Đang mượn</div>
-                        <div class="stat-val">3</div>
+                        <div class="stat-val">0</div>
                     </div>
                 </div>
                 <div class="stat-row">
                     <div class="stat-icon">✅</div>
                     <div>
                         <div class="stat-label">Đã trả</div>
-                        <div class="stat-val">27</div>
+                        <div class="stat-val">0</div>
                     </div>
                 </div>
                 <div class="stat-row">
                     <div class="stat-icon">⭐</div>
                     <div>
                         <div class="stat-label">Điểm tích lũy</div>
-                        <div class="stat-val">580</div>
+                        <div class="stat-val">0</div>
                     </div>
                 </div>
             </div>
@@ -605,25 +605,42 @@
                     </div>
                 </div>
                 <div class="reader-controls">
-                    <button class="reader-ctrl-btn mobile-toc-btn" onclick="toggleReaderSidebar()"
-                        title="Mục lục">📖</button>
-                    <div class="reader-control-group">
-                        <button class="reader-ctrl-btn" onclick="changeFontSize(-1)" title="Giảm cỡ chữ">A-</button>
-                        <span class="reader-font-size-indicator" id="fontSizeIndicator">16px</span>
-                        <button class="reader-ctrl-btn" onclick="changeFontSize(1)" title="Tăng cỡ chữ">A+</button>
-                    </div>
-                    <div class="reader-control-group"
-                        style="border-left: 1px solid var(--gray-200); padding-left: 12px;">
-                        <div class="reader-theme-dots">
-                            <span class="theme-dot theme-light active" onclick="changeReaderTheme('light')"
-                                title="Sáng"></span>
-                            <span class="theme-dot theme-sepia" onclick="changeReaderTheme('sepia')"
-                                title="Cổ điển"></span>
-                            <span class="theme-dot theme-dark" onclick="changeReaderTheme('dark')" title="Tối"></span>
-                        </div>
-                    </div>
-                    <button class="reader-close-btn" onclick="closeReader()" title="Đóng trình đọc">✕</button>
-                </div>
+    <button class="reader-ctrl-btn mobile-toc-btn" onclick="toggleReaderSidebar()" title="Mục lục">
+        📖
+    </button>
+
+    <div class="reader-control-group">
+        <button class="reader-ctrl-btn" onclick="changeFontSize(-2)" title="Giảm cỡ chữ">
+            A-
+        </button>
+
+        <span class="reader-font-size-indicator" id="fontSizeIndicator">
+            16px
+        </span>
+
+        <button class="reader-ctrl-btn" onclick="changeFontSize(2)" title="Tăng cỡ chữ">
+            A+
+        </button>
+    </div>
+
+    <div class="reader-control-group reader-theme-control">
+        <span class="theme-dot theme-light active"
+              onclick="changeReaderTheme('light')"
+              title="Nền sáng"></span>
+
+        <span class="theme-dot theme-sepia"
+              onclick="changeReaderTheme('sepia')"
+              title="Nền vàng"></span>
+
+        <span class="theme-dot theme-dark"
+              onclick="changeReaderTheme('dark')"
+              title="Nền tối"></span>
+    </div>
+
+    <button class="reader-close-btn" onclick="closeReader()" title="Đóng trình đọc">
+        ✕
+    </button>
+</div>
             </div>
             <div class="reader-main">
                 <aside class="reader-sidebar">

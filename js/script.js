@@ -286,6 +286,18 @@ async function loadData() {
     let storedBooks = null;
     let storedBorrows = null;
     let storedHistory = null;
+        // Reset dữ liệu demo cũ 1 lần để thống kê ban đầu về 0
+    const RESET_DEMO_KEY = 'libraviet_reset_demo_stats_v1';
+
+    if (!localStorage.getItem(RESET_DEMO_KEY)) {
+        localStorage.removeItem('libraviet_borrow_records');
+        localStorage.removeItem('libraviet_borrow_history');
+        localStorage.setItem('libraviet_stat_returned', '0');
+        localStorage.setItem('libraviet_stat_points', '0');
+        localStorage.setItem(RESET_DEMO_KEY, '1');
+    }
+
+
     try {
         storedBooks = localStorage.getItem('libraviet_books');
         storedBorrows = localStorage.getItem('libraviet_borrow_records');
@@ -313,23 +325,29 @@ async function loadData() {
         }
     }
 
-    if (!isValidDb) {
-        try {
-            const booksResponse = await fetch('data/books.json');
-            books = await booksResponse.json();
+   if (!isValidDb) {
+    try {
+        const booksResponse = await fetch('data/books.json');
+        books = await booksResponse.json();
 
-            const borrowsResponse = await fetch('data/borrows.json');
-            borrowRecords = await borrowsResponse.json();
-            historyRecords = [];
-            console.log("Loaded data via Fetch API successfully.");
-        } catch (error) {
-            console.warn("Fetch API failed (CORS fallback). Loading local fallback data.", error);
-            books = [...fallbackBooks];
-            borrowRecords = [...fallbackBorrowRecords];
-            historyRecords = [];
-        }
-        saveToLocalStorage();
+        // Không lấy dữ liệu mượn mẫu nữa, để thống kê ban đầu = 0
+        borrowRecords = [];
+        historyRecords = [];
+
+        console.log("Loaded books via Fetch API successfully.");
+    } catch (error) {
+        console.warn("Fetch API failed. Loading local fallback books.", error);
+
+        // Nếu fetch lỗi thì vẫn lấy sách dự phòng trong script.js
+        books = [...fallbackBooks];
+
+        // Nhưng dữ liệu mượn/trả vẫn để trống
+        borrowRecords = [];
+        historyRecords = [];
     }
+
+    saveToLocalStorage();
+}
 
     //  Chuẩn hóa và đồng bộ dữ liệu
     // 1. Loại  bỏ các bản ghi mượn trùng lặp (nếu có)
@@ -379,8 +397,8 @@ function saveToLocalStorage() {
 }
 // Cập nhật số liệu thống kê trên dashboard và số lượng sách theo từng thể loại
 function updateStats() {
-    let returnedCount = parseInt(localStorage.getItem('libraviet_stat_returned') || '27');
-    let points = parseInt(localStorage.getItem('libraviet_stat_points') || '580');
+    let returnedCount = parseInt(localStorage.getItem('libraviet_stat_returned') || '0');
+let points = parseInt(localStorage.getItem('libraviet_stat_points') || '0');
 // Lưu ngược lại các giá trị vào bộ nhớ trình duyệt (chuyển về dạng chữ toString) để đảm bảo dữ liệu luôn khới tạo chính xác
     localStorage.setItem('libraviet_stat_returned', returnedCount.toString());
     localStorage.setItem('libraviet_stat_points', points.toString());
@@ -1874,8 +1892,8 @@ function executeTransaction(bookId) {
             borrowRecords.splice(recordIndex, 1);
             book.status = 'available';
 
-            let returnedCount = parseInt(localStorage.getItem('libraviet_stat_returned') || '27') + 1;
-            let points = parseInt(localStorage.getItem('libraviet_stat_points') || '580') + 50;
+            let returnedCount = parseInt(localStorage.getItem('libraviet_stat_returned') || '0') + 1;
+            let points = parseInt(localStorage.getItem('libraviet_stat_points') || '0') + 50;
 
             localStorage.setItem('libraviet_stat_returned', returnedCount.toString());
             localStorage.setItem('libraviet_stat_points', points.toString());
@@ -1974,24 +1992,37 @@ function openReader(bookId) {
     renderReaderContent();
 
     const overlay = document.getElementById('readerOverlay');
+  
     if (overlay) {
-        overlay.classList.add('open');
-        document.body.style.overflow = 'hidden';
+    overlay.classList.add('open');
+    document.body.classList.add('reader-open');
+    document.body.style.overflow = 'hidden';
     }
+    
 
     closeModal();
 }
 
 function closeReader() {
     const overlay = document.getElementById('readerOverlay');
+
     if (overlay) {
         overlay.classList.remove('open');
-        document.body.style.overflow = '';
+        overlay.classList.remove(
+            'reader-theme-light',
+            'reader-theme-sepia',
+            'reader-theme-dark'
+        );
     }
+
+    document.body.classList.remove('reader-open');
+    document.body.style.overflow = '';
+
     const sidebar = document.querySelector('.reader-sidebar');
     if (sidebar) {
         sidebar.classList.remove('mobile-open');
     }
+
     currentReadingBookId = null;
 }
 
@@ -2015,7 +2046,7 @@ function renderReaderContent() {
             <h2 style="font-family:'Playfair Display', serif; font-size: 26px; margin-bottom: 24px;">${chapter.title}</h2>
             <div>${chapter.content}</div>
         `;
-        contentArea.style.fontSize = currentFontSize + 'px';
+        applyReaderFontSize();
     }
 
     const pageNumSpan = document.getElementById('readerPageNum');
@@ -2074,40 +2105,75 @@ function jumpToPage(pageIndex) {
     }
 }
 
-function changeFontSize(delta) {
-    const newSize = currentFontSize + delta;
-    if (newSize >= 12 && newSize <= 28) {
-        currentFontSize = newSize;
-        const contentArea = document.getElementById('readerContent');
-        if (contentArea) {
-            contentArea.style.fontSize = currentFontSize + 'px';
-        }
-        const indicator = document.getElementById('fontSizeIndicator');
-        if (indicator) {
-            indicator.textContent = currentFontSize + 'px';
-        }
-        localStorage.setItem('libraviet_reader_font_size', currentFontSize.toString());
+function applyReaderFontSize() {
+    const contentArea = document.getElementById('readerContent');
+
+    if (contentArea) {
+        contentArea.style.setProperty('--reader-font-size', currentFontSize + 'px');
+        contentArea.style.fontSize = currentFontSize + 'px';
     }
+
+    const indicator = document.getElementById('fontSizeIndicator');
+
+    if (indicator) {
+        indicator.textContent = currentFontSize + 'px';
+    }
+}
+
+function changeFontSize(delta) {
+    const minSize = 14;
+    const maxSize = 34;
+
+    let newSize = currentFontSize + delta;
+
+    if (newSize < minSize) {
+        newSize = minSize;
+    }
+
+    if (newSize > maxSize) {
+        newSize = maxSize;
+    }
+
+    currentFontSize = newSize;
+
+    applyReaderFontSize();
+
+    localStorage.setItem(
+        'libraviet_reader_font_size',
+        currentFontSize.toString()
+    );
 }
 
 function changeReaderTheme(theme) {
     currentReaderTheme = theme;
+
     applyReaderTheme(theme);
+
     localStorage.setItem('libraviet_reader_theme', theme);
 }
 
 function applyReaderTheme(theme) {
     const overlay = document.getElementById('readerOverlay');
+
     if (!overlay) return;
 
-    overlay.className = 'reader-overlay open reader-theme-' + theme;
+    overlay.classList.remove(
+        'reader-theme-light',
+        'reader-theme-sepia',
+        'reader-theme-dark'
+    );
+
+    overlay.classList.add('reader-theme-' + theme);
 
     document.querySelectorAll('.theme-dot').forEach(dot => {
         dot.classList.remove('active');
-        if (dot.classList.contains('theme-' + theme)) {
-            dot.classList.add('active');
-        }
     });
+
+    const activeDot = document.querySelector('.theme-' + theme);
+
+    if (activeDot) {
+        activeDot.classList.add('active');
+    }
 }
 
 // =====12 SEARCH =====
@@ -3026,9 +3092,8 @@ function renderProfilePage() {
     const users = getAuthUsers();
     const savedUser = users.find(u => u.id === user.id) || user;
 
-    const returnedCount = parseInt(localStorage.getItem('libraviet_stat_returned') || '27');
-    const points = parseInt(localStorage.getItem('libraviet_stat_points') || '580');
-
+    const returnedCount = parseInt(localStorage.getItem('libraviet_stat_returned') || '0');
+    const points = parseInt(localStorage.getItem('libraviet_stat_points') || '0');
     const avatarBig = document.getElementById('profileAvatarBig');
     const nameEl = document.getElementById('profileName');
     const studentIdEl = document.getElementById('profileStudentId');
@@ -3133,4 +3198,15 @@ document.addEventListener('DOMContentLoaded', function () {
         updateSmartNavText(currentLang);
         renderProfilePage();
     }, 200);
+});
+
+
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+        const readerOverlay = document.getElementById('readerOverlay');
+
+        if (readerOverlay && readerOverlay.classList.contains('open')) {
+            closeReader();
+        }
+    }
 });

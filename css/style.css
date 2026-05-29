@@ -1689,7 +1689,221 @@ aside {
     pointer-events: none;
     transition: opacity .25s;
 }
+/* =====================================================
+   FIX ĐỌC SÁCH ONLINE: PHÓNG CHỮ, ĐỔI MÀU, THOÁT SÁCH
+===================================================== */
 
+.reader-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    flex-wrap: wrap !important;
+}
+
+.reader-control-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.reader-theme-control {
+    border-left: 1.5px solid #E5E7EB !important;
+    padding-left: 12px !important;
+}
+
+.reader-ctrl-btn {
+    width: 34px !important;
+    height: 34px !important;
+    border: 1.5px solid #E5E7EB !important;
+    background: #FFFFFF !important;
+    color: #111827 !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+}
+
+.reader-ctrl-btn:hover {
+    border-color: #F97316 !important;
+    color: #F97316 !important;
+    background: #FFF7ED !important;
+}
+
+.reader-font-size-indicator {
+    min-width: 48px !important;
+    text-align: center !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #4B5563 !important;
+}
+
+.theme-dot {
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    border: 2px solid transparent !important;
+}
+
+.theme-dot.active {
+    border-color: #F97316 !important;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15) !important;
+}
+
+.theme-light {
+    background: #F8FAFC !important;
+    box-shadow: inset 0 0 0 1px #CBD5E1 !important;
+}
+
+.theme-sepia {
+    background: #F4EAD4 !important;
+    box-shadow: inset 0 0 0 1px #D6B980 !important;
+}
+
+.theme-dark {
+    background: #1E293B !important;
+    box-shadow: inset 0 0 0 1px #475569 !important;
+}
+
+/* Nút thoát sách */
+.reader-back-btn,
+.reader-close-btn {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 999 !important;
+}
+
+.reader-close-btn {
+    border: none !important;
+    background: transparent !important;
+    font-size: 24px !important;
+    cursor: pointer !important;
+    color: #64748B !important;
+}
+
+.reader-close-btn:hover {
+    color: #F97316 !important;
+}
+
+/* Nút qua trang */
+.reader-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+}
+
+.reader-nav-btn {
+    border: none !important;
+    background: #F97316 !important;
+    color: white !important;
+    padding: 9px 20px !important;
+    border-radius: 999px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+}
+
+.reader-nav-btn:hover {
+    background: #EA580C !important;
+}
+
+.reader-nav-btn:disabled {
+    background: #E5E7EB !important;
+    color: #9CA3AF !important;
+    cursor: not-allowed !important;
+}
+
+.reader-page-num {
+    font-weight: 700 !important;
+    color: #64748B !important;
+}
+
+/* Nền sáng */
+.reader-theme-light .reader-container,
+.reader-theme-light .reader-header,
+.reader-theme-light .reader-footer {
+    background: #FFFFFF !important;
+    color: #111827 !important;
+}
+
+.reader-theme-light .reader-content-wrap {
+    background: #FFFFFF !important;
+}
+
+.reader-theme-light .reader-content {
+    color: #334155 !important;
+}
+
+/* Nền vàng */
+.reader-theme-sepia .reader-container,
+.reader-theme-sepia .reader-header,
+.reader-theme-sepia .reader-footer {
+    background: #F4EAD4 !important;
+    color: #4A3E25 !important;
+}
+
+.reader-theme-sepia .reader-sidebar {
+    background: #EFE4CD !important;
+}
+
+.reader-theme-sepia .reader-content-wrap {
+    background: #FBF6EC !important;
+}
+
+.reader-theme-sepia .reader-content {
+    color: #4A3E25 !important;
+}
+
+/* Nền tối */
+.reader-theme-dark .reader-container,
+.reader-theme-dark .reader-header,
+.reader-theme-dark .reader-footer {
+    background: #0F172A !important;
+    color: #E2E8F0 !important;
+}
+
+.reader-theme-dark .reader-sidebar {
+    background: #0B0F19 !important;
+}
+
+.reader-theme-dark .reader-content-wrap {
+    background: #1E293B !important;
+}
+
+.reader-theme-dark .reader-content {
+    color: #CBD5E1 !important;
+}
+
+.reader-theme-dark .reader-content h2,
+.reader-theme-dark .reader-content h3 {
+    color: #F8FAFC !important;
+}
+
+@media (max-width: 768px) {
+    .reader-controls {
+        gap: 8px !important;
+    }
+
+    .reader-ctrl-btn {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 12px !important;
+    }
+
+    .reader-theme-control {
+        padding-left: 8px !important;
+    }
+
+    .theme-dot {
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    .reader-nav-btn {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+    }
+}
 .modal-overlay.open {
     opacity: 1;
     pointer-events: all;
@@ -3717,3 +3931,4 @@ nav {
         padding: 11px 12px;
     }
 }
+
